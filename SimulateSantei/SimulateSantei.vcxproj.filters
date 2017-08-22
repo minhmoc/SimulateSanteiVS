@@ -41,5 +41,8 @@
     <ClInclude Include="SimulateMouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SanteiOrder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -163,7 +163,10 @@ private: System::Windows::Forms::Button^  BT_RTR;
 private: System::Windows::Forms::Button^  BT_Submit;
 private: System::Windows::Forms::Button^  BT_Sb_Lg;
 private: System::Windows::Forms::Button^  BT_Pause;
-private: System::Windows::Forms::PictureBox^  Image;
+private: System::Windows::Forms::PictureBox^  Panel_Image;
+
+private: System::Windows::Forms::Panel^  Panel_Batch;
+private: System::Windows::Forms::Panel^  Panel_ID;
 
 
 
@@ -306,8 +309,10 @@ private: System::Windows::Forms::PictureBox^  Image;
 			this->BT_Submit = (gcnew System::Windows::Forms::Button());
 			this->BT_Sb_Lg = (gcnew System::Windows::Forms::Button());
 			this->BT_Pause = (gcnew System::Windows::Forms::Button());
-			this->Image = (gcnew System::Windows::Forms::PictureBox());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Image))->BeginInit();
+			this->Panel_Image = (gcnew System::Windows::Forms::PictureBox());
+			this->Panel_Batch = (gcnew System::Windows::Forms::Panel());
+			this->Panel_ID = (gcnew System::Windows::Forms::Panel());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Panel_Image))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// bt_start
@@ -340,7 +345,7 @@ private: System::Windows::Forms::PictureBox^  Image;
 			// 
 			// textbox_test
 			// 
-			this->textbox_test->Location = System::Drawing::Point(999, 91);
+			this->textbox_test->Location = System::Drawing::Point(1000, 282);
 			this->textbox_test->Name = L"textbox_test";
 			this->textbox_test->Size = System::Drawing::Size(80, 20);
 			this->textbox_test->TabIndex = 3;
@@ -349,7 +354,7 @@ private: System::Windows::Forms::PictureBox^  Image;
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(999, 194);
+			this->textBox1->Location = System::Drawing::Point(999, 320);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(80, 20);
 			this->textBox1->TabIndex = 4;
@@ -1126,7 +1131,7 @@ private: System::Windows::Forms::PictureBox^  Image;
 			// 
 			// BT_RTL
 			// 
-			this->BT_RTL->Location = System::Drawing::Point(638, 11);
+			this->BT_RTL->Location = System::Drawing::Point(638, 46);
 			this->BT_RTL->Name = L"BT_RTL";
 			this->BT_RTL->Size = System::Drawing::Size(75, 23);
 			this->BT_RTL->TabIndex = 115;
@@ -1135,7 +1140,7 @@ private: System::Windows::Forms::PictureBox^  Image;
 			// 
 			// BT_RTR
 			// 
-			this->BT_RTR->Location = System::Drawing::Point(739, 12);
+			this->BT_RTR->Location = System::Drawing::Point(739, 46);
 			this->BT_RTR->Name = L"BT_RTR";
 			this->BT_RTR->Size = System::Drawing::Size(75, 23);
 			this->BT_RTR->TabIndex = 116;
@@ -1169,20 +1174,37 @@ private: System::Windows::Forms::PictureBox^  Image;
 			this->BT_Pause->Text = L"Pause (ESC)";
 			this->BT_Pause->UseVisualStyleBackColor = true;
 			// 
-			// Image
+			// Panel_Image
 			// 
-			this->Image->Location = System::Drawing::Point(638, 164);
-			this->Image->Name = L"Image";
-			this->Image->Size = System::Drawing::Size(291, 303);
-			this->Image->TabIndex = 120;
-			this->Image->TabStop = false;
+			this->Panel_Image->BackColor = System::Drawing::SystemColors::ActiveBorder;
+			this->Panel_Image->Location = System::Drawing::Point(638, 164);
+			this->Panel_Image->Name = L"Panel_Image";
+			this->Panel_Image->Size = System::Drawing::Size(291, 303);
+			this->Panel_Image->TabIndex = 120;
+			this->Panel_Image->TabStop = false;
+			// 
+			// Panel_Batch
+			// 
+			this->Panel_Batch->Location = System::Drawing::Point(638, 10);
+			this->Panel_Batch->Name = L"Panel_Batch";
+			this->Panel_Batch->Size = System::Drawing::Size(75, 20);
+			this->Panel_Batch->TabIndex = 121;
+			// 
+			// Panel_ID
+			// 
+			this->Panel_ID->Location = System::Drawing::Point(739, 9);
+			this->Panel_ID->Name = L"Panel_ID";
+			this->Panel_ID->Size = System::Drawing::Size(75, 20);
+			this->Panel_ID->TabIndex = 122;
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1096, 583);
-			this->Controls->Add(this->Image);
+			this->Controls->Add(this->Panel_ID);
+			this->Controls->Add(this->Panel_Batch);
+			this->Controls->Add(this->Panel_Image);
 			this->Controls->Add(this->BT_Pause);
 			this->Controls->Add(this->BT_Sb_Lg);
 			this->Controls->Add(this->BT_Submit);
@@ -1305,9 +1327,10 @@ private: System::Windows::Forms::PictureBox^  Image;
 			this->Controls->Add(this->bt_start);
 			this->KeyPreview = true;
 			this->Name = L"MyForm";
+			this->Opacity = 0.6;
 			this->Text = L"MyForm";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Image))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Panel_Image))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1318,7 +1341,7 @@ private: System::Windows::Forms::PictureBox^  Image;
 	private: System::Void textbox_test_TextChanged(System::Object^  sender, System::EventArgs^  e) {}
 	private: System::Void textbox_test_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 	private: System::Void MyForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
-private: System::Void progressBar1_Click(System::Object^  sender, System::EventArgs^  e) {
-}
+
+
 };//end class
 }//end namespace
