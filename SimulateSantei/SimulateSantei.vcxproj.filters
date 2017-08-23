@@ -44,5 +44,16 @@
     <ClInclude Include="SanteiOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SanteiHWND.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SanteiSim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MyForm.resx">
+      <Filter>Resource Files</Filter>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

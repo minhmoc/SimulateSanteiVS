@@ -5,6 +5,7 @@
 #include "CaptureAnImage.h"
 #include "SimulateKeyboard.h"
 #include "SanteiOrder.h"
+#include "SanteiHWND.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -125,27 +126,10 @@ BOOL CALLBACK SetRect(HWND hwnd, LPARAM lParam) {
 	System::Drawing::Size size(rect.right - rect.left, rect.bottom - rect.top);
 	System::Drawing::Point topleft(rect.left, rect.top);
 	System::Windows::Forms::Control^ control;
-	System::String^ name("INVALID");
+	System::String^ name = GetSanteiName(i);
 
-	switch (i) {
-	case static_cast<int>(SanteiOrder::Image) : name = "Panel_Image"; break;
-	case static_cast<int>(SanteiOrder::Batch) : name = "Panel_Batch"; break;
-	case static_cast<int>(SanteiOrder::BL1_1) : name = "TX_B1_1"; break;
-	case static_cast<int>(SanteiOrder::BL1_2) : name = "TX_B1_2"; break;
-	case static_cast<int>(SanteiOrder::BL1_3) : name = "TX_B1_3"; break;
-	case static_cast<int>(SanteiOrder::BL1_7) : name = "TX_B1_7"; break;
-	case static_cast<int>(SanteiOrder::BL1_8) : name = "TX_B1_8"; break;
-	case static_cast<int>(SanteiOrder::BL1_9) : name = "TX_B1_9"; break;
-	case static_cast<int>(SanteiOrder::BL1_10) : name = "TX_B1_10"; break;
-	case static_cast<int>(SanteiOrder::RotLeft) : name = "BT_RTL"; break;
-	case static_cast<int>(SanteiOrder::RotRight) : name = "BT_RTR"; break;
-	case static_cast<int>(SanteiOrder::Submit) : name = "BT_Submit"; break;
-	case static_cast<int>(SanteiOrder::Sb_Lg) : name = "BT_SB_LG"; break;
-	case static_cast<int>(SanteiOrder::Pause) : name = "BT_Pause"; break;
-	default: name = "INVALID"; break;
-
-	}
 	if (name != "INVALID") {
+		SanteiHWND[IntToSanteiOrder(i)] = hwnd;
 		if (form->Controls->Find(name, true) &&
 			form->Controls->Find(name, true)->Length == 1) {
 			control = form->Controls->Find(name, true)[0];
@@ -217,5 +201,14 @@ System::Void Transparency::MyForm::MyForm_KeyDown(System::Object^  sender, Syste
 	if (e->KeyCode == Keys::Escape) {
 		std::cout << "Esc is pressed\n";
 		e->SuppressKeyPress = true;//dont pass key event to underlying control
+	}
+}
+
+System::Void Transparency::MyForm::TX_B1_1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+	HWND hwnd;
+
+	if (SanteiHWND.find(SanteiOrder::BL1_1) != SanteiHWND.end()) {
+		hwnd = SanteiHWND.find(SanteiOrder::BL1_1)->second;
+		
 	}
 }
