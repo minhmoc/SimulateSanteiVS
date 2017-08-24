@@ -3,6 +3,7 @@
 #include "SanteiOrder.h"
 #include "SanteiHWND.h"
 #include "SimulateKeyboard.h"
+#include "SimulateMouse.h"
 #include "SanteiSim.h"
 
 namespace Transparency {
@@ -85,6 +86,8 @@ namespace Transparency {
 			this->TextBoxes[i]->TextChanged += gcnew System::EventHandler(this, &MyForm::TextBoxTextChanged);
 			this->TextBoxes[i]->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::textbox_test_KeyDown);
 			this->TextBoxes[i]->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::NumberOnly_KeyPressed);
+			this->TextBoxes[i]->Enter += gcnew System::EventHandler(this, &MyForm::TextBox_Enter);
+			this->TextBoxes[i]->Click += gcnew System::EventHandler(this, &MyForm::TextBox_Click);
 
 			this->Controls->Add(TextBoxes[i]);
 		}
@@ -153,7 +156,6 @@ namespace Transparency {
 				 this->textbox_test->TabIndex = 3;
 				 this->textbox_test->TextChanged += gcnew System::EventHandler(this, &MyForm::textbox_test_TextChanged);
 				 this->textbox_test->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::textbox_test_KeyDown);
-
 				 // 
 				 // textBox1
 				 // 
@@ -251,7 +253,6 @@ namespace Transparency {
 				 this->Controls->Add(this->bt_start);
 				 this->KeyPreview = true;
 				 this->Name = L"MyForm";
-				 this->Opacity = 0.6;
 				 this->Text = L"MyForm";
 				 this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
 				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Panel_Image))->EndInit();
@@ -268,6 +269,7 @@ namespace Transparency {
 	private: System::Void textbox_test_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 	private: System::Void MyForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 	private: System::Void TX_B1_1_TextChanged(System::Object^  sender, System::EventArgs^  e);
+
 	private: System::Void TextBoxTextChanged(System::Object^  sender, System::EventArgs^  e) {
 		std::cout << "Textbox text Changed\n";
 		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
@@ -291,7 +293,7 @@ namespace Transparency {
 			std::cout << "HWND: " << buf << std::endl;
 
 			WriteCharacterCP(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second, dif);
-
+			
 			this->OldTexts[GetTextBoxIndex(textbox->Name)] = newtext;
 		}
 		else {
@@ -302,6 +304,27 @@ namespace Transparency {
 	private: System::Void NumberOnly_KeyPressed(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
 		e->Handled = !(System::Char::IsDigit(e->KeyChar)) && !(System::Char::IsControl(e->KeyChar));
 	}
+private: System::Void TextBox_Enter(System::Object^  sender, System::EventArgs^  e) {
+	/*std::cout << "Textbox get focus\n";
+	System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+	if (textbox != nullptr) {
+		System::String^ buttonName = textbox->Name->Remove(0, 2)->Insert(0, L"BT");
+		MakeLMClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second, 1, 1);
+	}
+	else {
+		std::cout << "Error: Failt in conversion from Object to TextBox \n";
+	}*/
+}
+private: System::Void TextBox_Click(System::Object^  sender, System::EventArgs^  e) {
+	System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+	if (textbox != nullptr) {
+		System::String^ buttonName = textbox->Name->Remove(0, 2)->Insert(0, L"BT");
+		MakeLMClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second, 1, 1);
+	}
+	else {
+		std::cout << "Error: Failt in conversion from Object to TextBox \n";
+	}
+}
 };//end class
 }//end namespace
 

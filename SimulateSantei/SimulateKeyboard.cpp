@@ -171,9 +171,9 @@ BYTE GetScanCode_VK(BYTE vk)
 
 void WriteCharacterCP(HWND hwnd, const char key)
 {
-	PostMessageA(hwnd, WM_KEYDOWN, GetVkCode(key), MakeLPARAM_WM_KEYDOWN(key));
-	//PostMessageA(hwnd, WM_CHAR, key, MakeLPARAM_WM_CHAR(key));
-	PostMessageA(hwnd, WM_KEYUP, GetVkCode(key), MakeLPARAM_WM_KEYUP(key));
+	//PostMessageA(hwnd, WM_KEYDOWN, GetVkCode(key), MakeLPARAM_WM_KEYDOWN(key));
+	PostMessageA(hwnd, WM_CHAR, key, MakeLPARAM_WM_CHAR(key));
+	//PostMessageA(hwnd, WM_KEYUP, GetVkCode(key), MakeLPARAM_WM_KEYUP(key));
 }
 
 LPARAM MakeLPARAM_WM_CHAR(char key, unsigned short rep)

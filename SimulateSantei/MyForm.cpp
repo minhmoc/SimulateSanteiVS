@@ -106,6 +106,9 @@ HWND CheckSantei() {
 
 	return hwnd_santei;
 }
+namespace Stupid {
+	RECT oldRect;
+}
 
 BOOL CALLBACK SetRect(HWND hwnd, LPARAM lParam) {
 	//
@@ -121,10 +124,11 @@ BOOL CALLBACK SetRect(HWND hwnd, LPARAM lParam) {
 	//Set Location and Size
 	//
 	static int i = 0;
-	RECT rect;
-	GetWindowRect(hwnd, &rect);
-	System::Drawing::Size size(rect.right - rect.left, rect.bottom - rect.top);
-	System::Drawing::Point topleft(rect.left, rect.top);
+	System::Drawing::Size size(Stupid::oldRect.right - Stupid::oldRect.left, Stupid::oldRect.bottom - Stupid::oldRect.top);
+	System::Drawing::Point topleft(Stupid::oldRect.left, Stupid::oldRect.top);
+	RECT newRect;
+	GetWindowRect(hwnd, &newRect);
+	Stupid::oldRect = newRect;
 	System::Windows::Forms::Control^ control;
 	System::String^ name = GetSanteiName(i);
 
