@@ -11,6 +11,7 @@ using namespace System;
 using namespace System::Windows::Forms;
 
 HWND CheckSantei();
+BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM lParam);
 
 [STAThread]
 void Main(cli::array<System::String^>^ args)
@@ -94,35 +95,29 @@ BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM lParam) {
 	System::Runtime::InteropServices::GCHandle val = System::Runtime::InteropServices::GCHandle::FromIntPtr(ip2);
 	System::Object ^obj = val.Target;
 	//Console::WriteLine("Type - " + obj->GetType()->ToString());
-	Transparency::MyForm^ form = (Transparency::MyForm ^) (obj);
+	System::Drawing::Graphics^ graphic = (System::Drawing::Graphics^) (obj);
 
-	//graphics->DrawString(L"Hello .NET Guide!", gcnew System::Drawing::Font("Arial", 60), System::Drawing::Brushes::Green, System::Drawing::PointF(2, 2));
 	//
-	//Set Location and Size
+	//Get Location and Size
 	//
+	RECT rect;
+	GetWindowRect(hwnd, &rect);
 	static int i = 0;
-	System::Drawing::Size size(Stupid::oldRect.right - Stupid::oldRect.left, Stupid::oldRect.bottom - Stupid::oldRect.top);
-	System::Drawing::Point topleft(Stupid::oldRect.left, Stupid::oldRect.top);
-	RECT newRect;
-	GetWindowRect(hwnd, &newRect);
-	Stupid::oldRect = newRect;
-	System::Windows::Forms::Control^ control;
-	System::String^ name = GetSanteiName(i);
-
-	if (name != "INVALID") {
-		SanteiHWND[IntToSanteiOrder(i)] = hwnd;
-		if (form->Controls->Find(name, true) &&
-			form->Controls->Find(name, true)->Length == 1) {
-			control = form->Controls->Find(name, true)[0];
-			control->Size = size;
-			control->Location = form->PointToClient(topleft);
-		}
-		else {
-			std::cout << "Couldn't found or multiple exist of: " << SystemStringToStdString(name) << "\n";
-		}
-	}
-
-
+	System::Drawing::Size size(rect.right - rect.left, rect.bottom - rect.top);
+	System::Drawing::Point topleft(rect.left, rect.top);
+	
+	//
+	//Drawing
+	//
+	System::Drawing::Pen^ pen_odd = gcnew System::Drawing::Pen(System::Drawing::Color::Red, 1);
+	System::Drawing::Pen^ pen_even = gcnew System::Drawing::Pen(System::Drawing::Color::Green, 1);
+	System::Drawing::Pen^ pen = (i % 2 == 0) ? pen_even : pen_odd;
+	System::Drawing::Rectangle rectangle(topleft, size);
+	graphic->DrawRectangle(pen, rectangle);
+	graphic->DrawString(System::Convert::ToString(i), gcnew System::Drawing::Font("Arial", 14), 
+		((i%2)==0?System::Drawing::Brushes::Green : System::Drawing::Brushes::Red), 
+		System::Drawing::PointF(topleft.X+2, topleft.Y+2));
+	graphic->DrawLine(pen, topleft, System::Drawing::Point(topleft.X+2, topleft.Y+2));
 
 	i++;
 	return true;
