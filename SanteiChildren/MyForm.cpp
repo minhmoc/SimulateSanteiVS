@@ -58,8 +58,14 @@ void Main(cli::array<System::String^>^ args)
 	System::Drawing::Bitmap^ bitmap = gcnew System::Drawing::Bitmap(picture->Width, picture->Height);
 	picture->DrawToBitmap(bitmap, picture->ClientRectangle);
 
+	//
+	//Convert form to LPARAM
+	//
 	System::Drawing::Graphics^ graphics = System::Drawing::Graphics::FromImage(bitmap);
-	graphics->DrawString(L"Hello .NET Guide!", gcnew System::Drawing::Font("Arial", 60), System::Drawing::Brushes::Green, System::Drawing::PointF(2, 2));
+	System::Runtime::InteropServices::GCHandle gch2 = System::Runtime::InteropServices::GCHandle::Alloc(graphics);
+	IntPtr ip2 = System::Runtime::InteropServices::GCHandle::ToIntPtr(gch2);
+	int obj = ip2.ToInt32();
+	EnumChildWindows(hwnd_santei, EnumChildProc, obj);
 	picture->Image = bitmap;
 
 	Application::Run(%form);
@@ -78,4 +84,46 @@ HWND CheckSantei() {
 	}
 
 	return hwnd_santei;
+}
+
+BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM lParam) {
+	//
+	//Convert LPARAM to MyForm
+	//
+	IntPtr ip2(lParam);
+	System::Runtime::InteropServices::GCHandle val = System::Runtime::InteropServices::GCHandle::FromIntPtr(ip2);
+	System::Object ^obj = val.Target;
+	//Console::WriteLine("Type - " + obj->GetType()->ToString());
+	Transparency::MyForm^ form = (Transparency::MyForm ^) (obj);
+
+	//graphics->DrawString(L"Hello .NET Guide!", gcnew System::Drawing::Font("Arial", 60), System::Drawing::Brushes::Green, System::Drawing::PointF(2, 2));
+	//
+	//Set Location and Size
+	//
+	static int i = 0;
+	System::Drawing::Size size(Stupid::oldRect.right - Stupid::oldRect.left, Stupid::oldRect.bottom - Stupid::oldRect.top);
+	System::Drawing::Point topleft(Stupid::oldRect.left, Stupid::oldRect.top);
+	RECT newRect;
+	GetWindowRect(hwnd, &newRect);
+	Stupid::oldRect = newRect;
+	System::Windows::Forms::Control^ control;
+	System::String^ name = GetSanteiName(i);
+
+	if (name != "INVALID") {
+		SanteiHWND[IntToSanteiOrder(i)] = hwnd;
+		if (form->Controls->Find(name, true) &&
+			form->Controls->Find(name, true)->Length == 1) {
+			control = form->Controls->Find(name, true)[0];
+			control->Size = size;
+			control->Location = form->PointToClient(topleft);
+		}
+		else {
+			std::cout << "Couldn't found or multiple exist of: " << SystemStringToStdString(name) << "\n";
+		}
+	}
+
+
+
+	i++;
+	return true;
 }
