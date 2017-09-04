@@ -124,11 +124,10 @@ BOOL CALLBACK SetRect(HWND hwnd, LPARAM lParam) {
 	//Set Location and Size
 	//
 	static int i = 0;
-	System::Drawing::Size size(Stupid::oldRect.right - Stupid::oldRect.left, Stupid::oldRect.bottom - Stupid::oldRect.top);
-	System::Drawing::Point topleft(Stupid::oldRect.left, Stupid::oldRect.top);
 	RECT newRect;
-	GetWindowRect(hwnd, &newRect);
-	Stupid::oldRect = newRect;
+	GetWindowRect(hwnd, &newRect);	
+	System::Drawing::Size size;
+	System::Drawing::Point topleft;
 	System::Windows::Forms::Control^ control;
 	System::String^ name = GetSanteiName(i);
 
@@ -137,13 +136,43 @@ BOOL CALLBACK SetRect(HWND hwnd, LPARAM lParam) {
 		if (form->Controls->Find(name, true) &&
 			form->Controls->Find(name, true)->Length == 1) {
 			control = form->Controls->Find(name, true)[0];
+
+			if (IntToSanteiOrder(i) != SanteiOrder::Image &&
+				IntToSanteiOrder(i) != SanteiOrder::RotVer &&
+				IntToSanteiOrder(i) != SanteiOrder::RotHoz &&
+				IntToSanteiOrder(i) != SanteiOrder::RotLeft &&
+				IntToSanteiOrder(i) != SanteiOrder::RotRight &&
+				IntToSanteiOrder(i) != SanteiOrder::Batch &&
+				IntToSanteiOrder(i) != SanteiOrder::ID &&
+
+				IntToSanteiOrder(i) != SanteiOrder::Submit &&
+				IntToSanteiOrder(i) != SanteiOrder::Sb_Lg &&
+				IntToSanteiOrder(i) != SanteiOrder::Pause &&
+				IntToSanteiOrder(i) != SanteiOrder::BL1 &&
+				IntToSanteiOrder(i) != SanteiOrder::BL2 &&
+				IntToSanteiOrder(i) != SanteiOrder::BL3 &&
+				IntToSanteiOrder(i) != SanteiOrder::BL4 &&
+				IntToSanteiOrder(i) != SanteiOrder::BL5) {
+				size = System::Drawing::Size(Stupid::oldRect.right - Stupid::oldRect.left, Stupid::oldRect.bottom - Stupid::oldRect.top);
+				topleft = System::Drawing::Point(Stupid::oldRect.left, Stupid::oldRect.top);
+
+			}
+			else {
+				size = System::Drawing::Size(newRect.right - newRect.left, newRect.bottom - newRect.top);
+				topleft = System::Drawing::Point(newRect.left, newRect.top);
+			}
 			control->Size = size;
 			control->Location = form->PointToClient(topleft);
+
+
+			System::Drawing::Size size(Stupid::oldRect.right - Stupid::oldRect.left, Stupid::oldRect.bottom - Stupid::oldRect.top);
+			System::Drawing::Point topleft(Stupid::oldRect.left, Stupid::oldRect.top);
 		}
 		else {
 			std::cout << "Couldn't found or multiple exist of: " << SystemStringToStdString(name) << "\n";
 		}
 	}
+	Stupid::oldRect = newRect;
 
 
 
@@ -151,68 +180,30 @@ BOOL CALLBACK SetRect(HWND hwnd, LPARAM lParam) {
 	return true;
 }
 
-System::Void Transparency::MyForm::bt_start_Click(System::Object^  sender, System::EventArgs^  e) {
-	//
-	//1.Test Capture
-	//2.Test pass MyForm as LPARAM
-	//
-#if 0
-	HWND hwnd_santei = FindWindowA(0, "new 1 - Notepad++ [Administrator]");
-	if (hwnd_santei) {
-		std::cout << "Found Notepad++\n";
-		//
-		//1
-		//
-		//CaptureAWindow(hwnd_santei, L"C:/Users/Admin/Desktop/capture.bmp");
+//System::Void Transparency::MyForm::textbox_test_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+//	//if (e->KeyCode == Keys::Enter) {
+//	//	//Move to next tab order
+//	//	SendKeys::Send("{TAB}");//send to active form
+//
+//	//	//
+//	//	//Disable "Ding" sound
+//	//	//
+//	//	e->SuppressKeyPress = true;//dont pass key event to underlying control
+//	//}
+//}
 
-		//
-		//2
-		//
-		System::Runtime::InteropServices::GCHandle gch2 = System::Runtime::InteropServices::GCHandle::Alloc(this);
-		IntPtr ip2 = System::Runtime::InteropServices::GCHandle::ToIntPtr(gch2);
-		int obj = ip2.ToInt32();
-		EnumChildWindows(hwnd_santei, EnumChildProc, obj);
-	}
-#endif
-	//
-	// IDEA: USE TIMER to BLINK '|' to simulate CARET
-	//
-	HWND notepad = FindWindowA(0, "Untitled - Notepad");
-	if (notepad) {
-		HWND notepad_edit = FindWindowExA(notepad, 0, "Edit", 0);
-		if (!notepad_edit) {
-			std::cout << "Cannot find Edit of Notepad\n";
-			return;
-		}
-		System::String^ text = textbox_test->Text;
-		WriteStringCP(notepad_edit, SystemStringToStdString(text).c_str(), text->Length);
-	}
-}
-
-System::Void Transparency::MyForm::textbox_test_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-	if (e->KeyCode == Keys::Enter) {
-		//Move to next tab order
-		SendKeys::Send("{TAB}");//send to active form
-
-		//
-		//Disable "Ding" sound
-		//
-		e->SuppressKeyPress = true;//dont pass key event to underlying control
-	}
-}
-
-System::Void Transparency::MyForm::MyForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-	if (e->KeyCode == Keys::Escape) {
-		std::cout << "Esc is pressed\n";
-		e->SuppressKeyPress = true;//dont pass key event to underlying control
-	}
-}
-
-System::Void Transparency::MyForm::TX_B1_1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-	HWND hwnd;
-
-	if (SanteiHWND.find(SanteiOrder::BL1_1) != SanteiHWND.end()) {
-		hwnd = SanteiHWND.find(SanteiOrder::BL1_1)->second;
-		
-	}
-}
+//System::Void Transparency::MyForm::MyForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+//	//if (e->KeyCode == Keys::Escape) {
+//	//	std::cout << "Esc is pressed\n";
+//	//	e->SuppressKeyPress = true;//dont pass key event to underlying control
+//	//}
+//}
+//
+//System::Void Transparency::MyForm::TX_B1_1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+//	HWND hwnd;
+//
+//	if (SanteiHWND.find(SanteiOrder::BL1_1) != SanteiHWND.end()) {
+//		hwnd = SanteiHWND.find(SanteiOrder::BL1_1)->second;
+//		
+//	}
+//}

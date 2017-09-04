@@ -1,7 +1,7 @@
 #pragma once
 
 #define TEXTBOXES_COUNT 5*22
-
+#define BUTTONS_COUNT 5
 ///
 /// Function: GetTextBoxName(int Index)
 ///

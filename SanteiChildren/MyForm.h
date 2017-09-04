@@ -36,6 +36,12 @@ namespace SanteiChildren {
 		}
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 
+
+
+	protected:
+
+
+
 	protected:
 
 	private:
@@ -57,7 +63,7 @@ namespace SanteiChildren {
 			// 
 			// pictureBox1
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(95, 95);
+			this->pictureBox1->Location = System::Drawing::Point(85, 126);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(100, 50);
 			this->pictureBox1->TabIndex = 0;
@@ -76,5 +82,6 @@ namespace SanteiChildren {
 
 		}
 #pragma endregion
+
 	};
 }

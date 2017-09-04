@@ -66,13 +66,23 @@ void PutRMClick(LONG dx, LONG dy)
 
 void MakeLMClick(HWND hwnd, short relative_x, short relative_y)
 {
-	/*std::cout << "hwnd=" << hwnd << std::endl;
-	std::cout << GetActiveWindow() << std::endl;
-	SendMessageA(hwnd, WM_ACTIVATE, MAKEWPARAM(WA_ACTIVE, 0), (LPARAM)GetActiveWindow());
-	std::cout << GetActiveWindow() << std::endl;*/
-	// SendMessageA(hwnd, WM_MOUSEMOVE, 0, MAKELPARAM(relative_x, relative_y));
-	//SendMessageA(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, MAKELPARAM(relative_x, relative_y));
-	//SendMessageA(hwnd, WM_LBUTTONUP, MK_LBUTTON, MAKELPARAM(relative_x, relative_y));
 	PostMessageA(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, MAKELPARAM(relative_x, relative_y));
 	PostMessageA(hwnd, WM_LBUTTONUP, MK_LBUTTON, MAKELPARAM(relative_x, relative_y));
+}
+
+void MakeRMClick(HWND hwnd, short relative_x, short relative_y)
+{
+	PostMessageA(hwnd, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(relative_x, relative_y));
+	PostMessageA(hwnd, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(relative_x, relative_y));
+}
+
+void MakeLMDbClick(HWND hwnd, short relative_x, short relative_y)
+{
+	PostMessageA(hwnd, WM_LBUTTONDBLCLK, MK_LBUTTON, MAKELPARAM(relative_x, relative_y));
+	PostMessageA(hwnd, WM_LBUTTONUP, MK_LBUTTON, MAKELPARAM(relative_x, relative_y));
+}
+void MakeRMDbClick(HWND hwnd, short relative_x, short relative_y)
+{
+	PostMessageA(hwnd, WM_RBUTTONDBLCLK, MK_RBUTTON, MAKELPARAM(relative_x, relative_y));
+	PostMessageA(hwnd, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(relative_x, relative_y));
 }

@@ -252,8 +252,8 @@ SanteiOrder GetSanteiOrder(System::String^ name) {
 	if (name == L"Panel_Image") return SanteiOrder::Image;
 	if (name == L"Unknow_RTV") return SanteiOrder::RotVer;
 	if (name == L"Unknow_RTH") return SanteiOrder::RotHoz;
-	if (name == L"BTRTL") return SanteiOrder::RotLeft;
-	if (name == L"BTRTR") return SanteiOrder::RotRight;
+	if (name == L"BT_RTL") return SanteiOrder::RotLeft;
+	if (name == L"BT_RTR") return SanteiOrder::RotRight;
 	if (name == L"Panel_Batch") return SanteiOrder::Batch;
 	if (name == L"Panel_ID") return SanteiOrder::ID;
 
@@ -499,8 +499,8 @@ System::String^ GetSanteiName(unsigned int order) {
 	case 4:	name = L"Panel_Image"; break;
 	case 6: name = L"Unknow_RTV"; break;
 	case 8: name = L"Unknow_RTH"; break;
-	case 10: name = L"BTRTL"; break;
-	case 9: name = L"BTRTR"; break;
+	case 10: name = L"BT_RTL"; break;
+	case 9: name = L"BT_RTR"; break;
 	case 372: name = L"Panel_Batch"; break;
 	case 370: name = L"Panel_ID"; break;
 

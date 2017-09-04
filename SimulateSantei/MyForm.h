@@ -41,14 +41,14 @@ namespace Transparency {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^  bt_start;
+
 	protected:
 
 	protected:
-	private: System::Windows::Forms::Button^  button2;
-	private: System::Windows::Forms::Button^  button3;
-	private: System::Windows::Forms::TextBox^  textbox_test;
-	private: System::Windows::Forms::TextBox^  textBox1;
+
+
+
+
 
 	private: System::Windows::Forms::Button^  BT_RTL;
 	private: System::Windows::Forms::Button^  BT_RTR;
@@ -67,11 +67,25 @@ namespace Transparency {
 		System::ComponentModel::Container ^components;
 
 	private:
+		///
+		/// Button
+		///
+		cli::array<System::Windows::Forms::Button^>^ Buttons;
+	private:
+		void InitializeButtons(void) {
+			this->Buttons = gcnew cli::array<System::Windows::Forms::Button^>(BUTTONS_COUNT);
+			for (int i = 0; i < BUTTONS_COUNT; i++) {
+				this->Buttons[i] = gcnew System::Windows::Forms::Button();
+
+			}
+		}
+
 		cli::array<System::Windows::Forms::TextBox^>^ TextBoxes;
-		cli::array<System::String^>^ OldTexts;
-		///
-		/// Function InitializeTextBoxes: keep code out of pragma region Designer
-		///
+	private: System::Windows::Forms::TextBox^  textBox1;
+			 cli::array<System::String^>^ OldTexts;
+			 ///
+			 /// Function InitializeTextBoxes: keep code out of pragma region Designer
+			 ///
 	private: void InitializeTextBoxes(void) {
 		this->TextBoxes = gcnew cli::array<System::Windows::Forms::TextBox^>(TEXTBOXES_COUNT);
 		this->OldTexts = gcnew cli::array<System::String^>(TEXTBOXES_COUNT);
@@ -83,12 +97,37 @@ namespace Transparency {
 			this->TextBoxes[i]->Size = System::Drawing::Size(80, 20);
 			//this->textbox_test->TabIndex = 3;
 
-			this->TextBoxes[i]->TextChanged += gcnew System::EventHandler(this, &MyForm::TextBoxTextChanged);
-			this->TextBoxes[i]->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::textbox_test_KeyDown);
-			this->TextBoxes[i]->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::NumberOnly_KeyPressed);
+			//this->TextBoxes[i]->TextChanged += gcnew System::EventHandler(this, &MyForm::TextBox_TextChanged);
+			//this->TextBoxes[i]->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::textbox_test_KeyDown);
+			this->TextBoxes[i]->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::TextBox_KeyPressed);
 			this->TextBoxes[i]->Enter += gcnew System::EventHandler(this, &MyForm::TextBox_Enter);
-			this->TextBoxes[i]->Click += gcnew System::EventHandler(this, &MyForm::TextBox_Click);
+			//this->TextBoxes[i]->Click += gcnew System::EventHandler(this, &MyForm::TextBox_Click);
 
+			this->TextBoxes[i]->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::TextBox_MouseClick);
+			this->TextBoxes[i]->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::TextBox_MouseDoubleClick);
+
+			this->TextBoxes[i]->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::TextBox_KeyDown);
+			this->TextBoxes[i]->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::TextBox_KeyUp);
+
+
+			if (GetTextBoxName(i)->Remove(0, 7) == L"2") {
+				this->TextBoxes[i]->MaxLength = 1;
+			}
+			if (GetTextBoxName(i)->Remove(0, 7) == L"8" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"9" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"10" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"11" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"16" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"17" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"18" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"19" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"20" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"23" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"24" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"25" ||
+				GetTextBoxName(i)->Remove(0, 7) == L"13") {
+				this->TextBoxes[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			}
 			this->Controls->Add(TextBoxes[i]);
 		}
 
@@ -104,11 +143,6 @@ namespace Transparency {
 			 /// </summary>
 			 void InitializeComponent(void)
 			 {
-				 this->bt_start = (gcnew System::Windows::Forms::Button());
-				 this->button2 = (gcnew System::Windows::Forms::Button());
-				 this->button3 = (gcnew System::Windows::Forms::Button());
-				 this->textbox_test = (gcnew System::Windows::Forms::TextBox());
-				 this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 				 this->BT_RTL = (gcnew System::Windows::Forms::Button());
 				 this->BT_RTR = (gcnew System::Windows::Forms::Button());
 				 this->BT_Submit = (gcnew System::Windows::Forms::Button());
@@ -117,52 +151,9 @@ namespace Transparency {
 				 this->Panel_Image = (gcnew System::Windows::Forms::PictureBox());
 				 this->Panel_Batch = (gcnew System::Windows::Forms::Panel());
 				 this->Panel_ID = (gcnew System::Windows::Forms::Panel());
+				 this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Panel_Image))->BeginInit();
 				 this->SuspendLayout();
-				 // 
-				 // bt_start
-				 // 
-				 this->bt_start->Location = System::Drawing::Point(999, 365);
-				 this->bt_start->Name = L"bt_start";
-				 this->bt_start->Size = System::Drawing::Size(75, 23);
-				 this->bt_start->TabIndex = 0;
-				 this->bt_start->Text = L"Start";
-				 this->bt_start->UseVisualStyleBackColor = true;
-				 this->bt_start->Click += gcnew System::EventHandler(this, &MyForm::bt_start_Click);
-				 // 
-				 // button2
-				 // 
-				 this->button2->Location = System::Drawing::Point(1000, 394);
-				 this->button2->Name = L"button2";
-				 this->button2->Size = System::Drawing::Size(75, 23);
-				 this->button2->TabIndex = 1;
-				 this->button2->Text = L"button2";
-				 this->button2->UseVisualStyleBackColor = true;
-				 // 
-				 // button3
-				 // 
-				 this->button3->Location = System::Drawing::Point(1000, 423);
-				 this->button3->Name = L"button3";
-				 this->button3->Size = System::Drawing::Size(75, 23);
-				 this->button3->TabIndex = 2;
-				 this->button3->Text = L"button3";
-				 this->button3->UseVisualStyleBackColor = true;
-				 // 
-				 // textbox_test
-				 // 
-				 this->textbox_test->Location = System::Drawing::Point(1000, 282);
-				 this->textbox_test->Name = L"textbox_test";
-				 this->textbox_test->Size = System::Drawing::Size(80, 20);
-				 this->textbox_test->TabIndex = 3;
-				 this->textbox_test->TextChanged += gcnew System::EventHandler(this, &MyForm::textbox_test_TextChanged);
-				 this->textbox_test->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::textbox_test_KeyDown);
-				 // 
-				 // textBox1
-				 // 
-				 this->textBox1->Location = System::Drawing::Point(999, 320);
-				 this->textBox1->Name = L"textBox1";
-				 this->textBox1->Size = System::Drawing::Size(80, 20);
-				 this->textBox1->TabIndex = 4;
 				 // 
 				 // BT_RTL
 				 // 
@@ -172,6 +163,12 @@ namespace Transparency {
 				 this->BT_RTL->TabIndex = 115;
 				 this->BT_RTL->Text = L"Rotate left";
 				 this->BT_RTL->UseVisualStyleBackColor = true;
+				 this->BT_RTL->Click += gcnew System::EventHandler(this, &MyForm::Button_Click);
+				 this->BT_RTL->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::Button_MouseDown);
+				 this->BT_RTL->MouseEnter += gcnew System::EventHandler(this, &MyForm::Button_MouseEnter);
+				 this->BT_RTL->MouseLeave += gcnew System::EventHandler(this, &MyForm::Button_MouseLeave);
+				 this->BT_RTL->MouseHover += gcnew System::EventHandler(this, &MyForm::Button_MouseHover);
+				 this->BT_RTL->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::Button_MouseUp);
 				 // 
 				 // BT_RTR
 				 // 
@@ -232,12 +229,21 @@ namespace Transparency {
 				 this->Panel_ID->Size = System::Drawing::Size(75, 20);
 				 this->Panel_ID->TabIndex = 122;
 				 // 
+				 // textBox1
+				 // 
+				 this->textBox1->Location = System::Drawing::Point(308, 87);
+				 this->textBox1->Name = L"textBox1";
+				 this->textBox1->Size = System::Drawing::Size(100, 20);
+				 this->textBox1->TabIndex = 123;
+				 
+				 // 
 				 // MyForm
 				 // 
 				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 				 this->AutoValidate = System::Windows::Forms::AutoValidate::EnablePreventFocusChange;
 				 this->ClientSize = System::Drawing::Size(1096, 583);
+				 this->Controls->Add(this->textBox1);
 				 this->Controls->Add(this->Panel_ID);
 				 this->Controls->Add(this->Panel_Batch);
 				 this->Controls->Add(this->Panel_Image);
@@ -246,15 +252,9 @@ namespace Transparency {
 				 this->Controls->Add(this->BT_Submit);
 				 this->Controls->Add(this->BT_RTR);
 				 this->Controls->Add(this->BT_RTL);
-				 this->Controls->Add(this->textBox1);
-				 this->Controls->Add(this->textbox_test);
-				 this->Controls->Add(this->button3);
-				 this->Controls->Add(this->button2);
-				 this->Controls->Add(this->bt_start);
 				 this->KeyPreview = true;
 				 this->Name = L"MyForm";
 				 this->Text = L"MyForm";
-				 this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
 				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Panel_Image))->EndInit();
 				 this->ResumeLayout(false);
 				 this->PerformLayout();
@@ -262,15 +262,7 @@ namespace Transparency {
 			 }
 #pragma endregion
 
-	private: System::Void bt_start_Click(System::Object^  sender, System::EventArgs^  e);
-	private: System::Void textbox_test_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-		std::cout << "Test text Changed\n";
-	}
-	private: System::Void textbox_test_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
-	private: System::Void MyForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
-	private: System::Void TX_B1_1_TextChanged(System::Object^  sender, System::EventArgs^  e);
-
-	private: System::Void TextBoxTextChanged(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void TextBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 		std::cout << "Textbox text Changed\n";
 		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
 		if (textbox != nullptr) {
@@ -293,7 +285,7 @@ namespace Transparency {
 			std::cout << "HWND: " << buf << std::endl;
 
 			WriteCharacterCP(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second, dif);
-			
+
 			this->OldTexts[GetTextBoxIndex(textbox->Name)] = newtext;
 		}
 		else {
@@ -301,29 +293,137 @@ namespace Transparency {
 		}
 	}
 
-	private: System::Void NumberOnly_KeyPressed(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
-		e->Handled = !(System::Char::IsDigit(e->KeyChar)) && !(System::Char::IsControl(e->KeyChar));
+	private: System::Void TextBox_KeyPressed(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+		e->Handled = !(System::Char::IsDigit(e->KeyChar)) && !(System::Char::IsControl(e->KeyChar))
+			&& !(e->KeyChar == '*') && !(e->KeyChar == ' ');
+		//if (e->KeyCode == Keys::Enter) {
+		//	//
+		//	//Disable "Ding" sound
+		//	//
+		//	e->SuppressKeyPress = true;//dont pass key event to underlying control
+		//}
+
 	}
-private: System::Void TextBox_Enter(System::Object^  sender, System::EventArgs^  e) {
-	/*std::cout << "Textbox get focus\n";
-	System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
-	if (textbox != nullptr) {
-		System::String^ buttonName = textbox->Name->Remove(0, 2)->Insert(0, L"BT");
-		MakeLMClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second, 1, 1);
+	private: System::Void TextBox_Enter(System::Object^  sender, System::EventArgs^  e) {
+		std::cout << "Textbox get focus\n";
+		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+		if (textbox != nullptr) {
+			System::String^ buttonName = textbox->Name->Remove(0, 2)->Insert(0, L"BT");
+			MakeLMClick(SanteiHWND.find(GetSanteiOrder(buttonName))->second, 1, 1);
+
+			//
+			//Select all if focus by keyboard
+			//
+			if (GetKeyState(VK_TAB) < 0 ||
+				GetKeyState(VK_RETURN) < 0)
+			{
+				textbox->SelectAll();
+			}
+
+			//select all if focus by arrow.Implementation sequence.
+			if (focus_by_arrow) {
+				focus_by_arrow = false;
+				textbox->SelectAll();
+			}
+		}
+		else {
+			std::cout << "Error: Failt in conversion from Object to TextBox \n";
+		}
 	}
-	else {
-		std::cout << "Error: Failt in conversion from Object to TextBox \n";
-	}*/
+	private: System::Void TextBox_Click(System::Object^  sender, System::EventArgs^  e) {
+		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+		if (textbox != nullptr) {
+			System::String^ buttonName = textbox->Name->Remove(0, 2)->Insert(0, L"BT");
+			MakeLMClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second, 1, 1);
+		}
+		else {
+			std::cout << "Error: Failt in conversion from Object to TextBox \n";
+		}
+	}
+	private: System::Void TextBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+		if (textbox != nullptr) {
+			///
+			///Not yet simulate up/down arrow key,so don't pass to santei
+			///
+			if (e->KeyCode == System::Windows::Forms::Keys::Up ||
+				e->KeyCode == System::Windows::Forms::Keys::Down) {
+				e->Handled = true;
+			}
+			else {
+				PostMessage(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second,
+					WM_KEYDOWN, e->KeyValue, MakeLPARAM_WM_KEYDOWN_VK(e->KeyValue));
+			}
+		}
+	}
+			 bool focus_by_arrow = false;
+	private: System::Void TextBox_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+		if (textbox != nullptr) {
+			///
+			///Not yet simulate up/down arrow key,so don't pass to santei
+			///
+			if (e->KeyCode == System::Windows::Forms::Keys::Up ||
+				e->KeyCode == System::Windows::Forms::Keys::Down) {
+				e->Handled = true;
+			}else {
+				PostMessage(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second,
+					WM_KEYUP, e->KeyValue, MakeLPARAM_WM_KEYUP_VK(e->KeyValue));
+			} 
+		}
+
+		//
+		//Make left/right arrow key like tab
+		//
+		if (e->KeyCode == Keys::Right) {
+			focus_by_arrow = true;
+			SelectNextControl(textbox, true, true, true, true);
+		}
+		if (e->KeyCode == Keys::Left) {
+			focus_by_arrow = true;
+			SelectNextControl(textbox, false, true, true, true);
+		}
+	}
+
+	private: System::Void TextBox_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+			MakeLMClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second,
+				e->X, e->Y);
+		}
+		if (e->Button == System::Windows::Forms::MouseButtons::Right) {
+			MakeRMClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second,
+				e->X, e->Y);
+		}
+	}
+	private: System::Void TextBox_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+			MakeLMDbClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second,
+				e->X, e->Y);
+		}
+		if (e->Button == System::Windows::Forms::MouseButtons::Right) {
+			MakeRMDbClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second,
+				e->X, e->Y);
+		}
+	}
+
+	private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+	}
+
+			 
+	private: System::Void Button_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+
+private: System::Void Button_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 }
-private: System::Void TextBox_Click(System::Object^  sender, System::EventArgs^  e) {
-	System::Windows::Forms::TextBox^ textbox = safe_cast<System::Windows::Forms::TextBox ^> (sender);
-	if (textbox != nullptr) {
-		System::String^ buttonName = textbox->Name->Remove(0, 2)->Insert(0, L"BT");
-		MakeLMClick(SanteiHWND.find(GetSanteiOrder(textbox->Name))->second, 1, 1);
-	}
-	else {
-		std::cout << "Error: Failt in conversion from Object to TextBox \n";
-	}
+private: System::Void Button_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void Button_MouseHover(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void Button_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void Button_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 }
 };//end class
 }//end namespace
